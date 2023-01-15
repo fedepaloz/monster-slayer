@@ -28,15 +28,37 @@
         <div class="healthbar__value" :style="playerBarStyles"></div>
       </div>
     </section>
-    <section id="controls">
+    <section class="container" v-if=winner>
+      <h2>game over</h2>
+      <h3 v-if="winner === 'monster'">you lost</h3>
+      <h3 v-else="winner === 'player'">you won</h3>
+      <h3 v-else>draw</h3>
+      <button @click="startGame">New game</button>
+
+    </section>
+    <section id="controls" v-else>
+      <!-- oppure  in una maniera piu estesa e comprensibile v-if="!winner" -->
       <button @click="attackMonster">ATTACK</button>
       <button :disabled="mayUseSpecialAttack" @click="specialAttackMonster">SPECIAL ATTACK</button>
       <button @click="healPlayer">HEAL</button>
-      <button>SURRENDER</button>
+      <button @click="surrender">SURRENDER</button>
     </section>
     <section id="log" class="container">
       <h2>Battle Log</h2>
-      <ul></ul>
+      <ul>
+        <li v-for="logMessage in logMessages">
+          {{logMessage.actionBy}} - {{logMessage.actionValue}} -
+          {{logMessage.actionType}}</li>
+        <!-- <li v-for="logMessage in logMessages">
+          <span>{{logMessage.actionBy === 'player' ? 'Player ' : 'Monster'
+            }}</span>
+          <span v-if="logMessage.actionType === 'heal'">heals himself for <span
+              class="log--heal">{{logMessage.actionValue}}</span></span>
+          <span v-else>
+            attack and deals <span class="log--damage">{{logMessage.actionValue}}</span>
+          </span>
+        </li> -->
+      </ul>
     </section>
   </div>
 </body>
